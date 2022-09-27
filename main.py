@@ -1,3 +1,3 @@
 import MIDI_Pedal
 
-MIDI_Pedal.apply("test.mid", "output/test.mid")
+MIDI_Pedal.apply("be_ps_14.mid", "output/be_ps_14.mid")
