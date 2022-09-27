@@ -5,6 +5,7 @@ def apply_midi(input_path: str, output_path: str):
     midiObject = _midiObj(input_path)
     midiObject.write(output_path)
 
+
 class _pedal:
     def __init__(self, on, off):
         self.on = on
@@ -32,12 +33,16 @@ class _midiObj:
         self.midi = pretty_midi.PrettyMIDI(path)
         self.midi.remove_invalid_notes()
         self.__concatenate()
-        self.__remove_duplicated_pedal()
         self.__apply_pedal()
 
     def __concatenate(self):
         self.__concatenate_notes()
         self.__concatenate_control()
+
+    def __apply_and_remove_pedal(self):
+        self.__remove_duplicated_pedal()
+        self.__apply_pedal()
+        self.__remove_all_pedal()
 
     def __concatenate_notes(self):
         for instrument in self.midi.instruments[1:]:
@@ -73,6 +78,11 @@ class _midiObj:
     def __apply_pedal(self):
         for pedal in self.pedalRange:
             pedal.apply(self.midi.instruments[0].notes)
+
+    def __remove_all_pedal(self):
+        for control in self.midi.instruments[0].control_changes.copy():
+            if control.number == 64:
+                self.midi.instruments[0].control_changes.remove(control)
 
     def write(self, path: str):
         self.midi.write(path)

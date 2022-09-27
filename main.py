@@ -9,3 +9,5 @@ print("=" * 30)
 
 for i in midi.pedalRange:
     print(i)
+
+midi.write("output/test.mid")
