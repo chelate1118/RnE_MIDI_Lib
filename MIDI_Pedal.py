@@ -1,7 +1,7 @@
 import pretty_midi
 
 
-def apply_midi(input_path: str, output_path: str):
+def apply(input_path: str, output_path: str):
     midiObject = _midiObj(input_path)
     midiObject.write(output_path)
 
