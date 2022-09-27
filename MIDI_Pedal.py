@@ -33,14 +33,15 @@ class _midiObj:
         self.midi = pretty_midi.PrettyMIDI(path)
         self.midi.remove_invalid_notes()
         self.__concatenate()
-        self.__apply_pedal()
+        self.__apply_and_remove_pedal()
 
     def __concatenate(self):
         self.__concatenate_notes()
         self.__concatenate_control()
+        self.midi.instruments = self.midi.instruments[0:1]
 
     def __apply_and_remove_pedal(self):
-        self.__remove_duplicated_pedal()
+        self.__set_pedal_range()
         self.__apply_pedal()
         self.__remove_all_pedal()
 
@@ -54,7 +55,7 @@ class _midiObj:
             self.midi.instruments[0].control_changes += instrument.control_changes
         self.midi.instruments[0].control_changes.sort(key=lambda x: (x.time, x.value))
 
-    def __remove_duplicated_pedal(self):
+    def __set_pedal_range(self):
         current = False
         first = False
         before = 0.0
