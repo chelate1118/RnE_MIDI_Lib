@@ -15,7 +15,7 @@ class _pedal:
         return f"({self.on}, {self.off})"
 
     def __is_in(self, note: pretty_midi.Note):
-        return self.on <= note.end <= self.off
+        return self.on < note.end <= self.off
 
     def __apply(self, note: pretty_midi.Note):
         if self.__is_in(note):
